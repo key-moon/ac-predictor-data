@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           path: ac-predictor-data
-          token: ${{ secrets.github_token }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install Python
         uses: actions/setup-python@v2
@@ -36,9 +36,9 @@ jobs:
         run: |
           git config user.name ac-predictor
           git config user.email kymn0116+ac-predictor@gmail.com
-          echo ${{ secrets.atcoder_password }} | ac-predictor-crawler login ${{ secrets.atcoder_username }}
+          echo ${{ secrets.ATCODER_PASSWORD }} | ac-predictor-crawler login ${{ secrets.ATCODER_USERNAME }}
 
       - name: Run crawler
         env:
-          HEALTHCHECK_UUID: ${{ secrets.healthcheck_uuid }}
+          HEALTHCHECK_UUID: ${{ secrets.HEALTHCHECK_UUID }}
         run: ac-predictor/crawler/healthcheck.sh
