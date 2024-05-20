@@ -1,0 +1,44 @@
+name: Crawl
+
+on:
+  workflow_dispatch: # for debugging
+  # schedule:
+  #   - cron: '*/20 * * * *'
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+    env:
+      REPOSITORY_PATH: ./ac-predictor-data # TODO: make absolute paths
+    steps:
+      - name: Checkout crawler
+        uses: actions/checkout@v4
+        with:
+          repository: key-moon/ac-predictor
+          path: ac-predictor
+      - name: Checkout data
+        uses: actions/checkout@v4
+        with:
+          path: ac-predictor-data
+          token: ${{ secrets.github_token }}
+
+      - name: Install Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+
+      - name: Install crawler
+        run: |
+          pip install -e ac-predictor/crawler
+
+      - name: Setup crawler
+        run: |
+          git config user.name ac-predictor
+          git config user.email kymn0116+ac-predictor@gmail.com
+          echo ${{ secrets.atcoder_password }} | ac-predictor-crawler login ${{ secrets.atcoder_username }}
+
+      - name: Run crawler
+        env:
+          HEALTHCHECK_UUID: ${{ secrets.healthcheck_uuid }}
+        run: ac-predictor/crawler/healthcheck.sh
