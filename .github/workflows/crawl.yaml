@@ -34,8 +34,8 @@ jobs:
 
       - name: Setup crawler
         run: |
-          git config user.name ac-predictor
-          git config user.email kymn0116+ac-predictor@gmail.com
+          git config --global user.name ac-predictor
+          git config --global user.email kymn0116+ac-predictor@gmail.com
           echo '${{ secrets.ATCODER_PASSWORD }}' | ac-predictor-crawler login '${{ secrets.ATCODER_USERNAME }}'
 
       - name: Run crawler
