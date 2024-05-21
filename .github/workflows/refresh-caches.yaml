@@ -3,8 +3,7 @@ name: refresh caches
 on:
   workflow_dispatch: # for debugging
   schedule:
-    # offsets the crawl to deal with the congestion before the start of the contest
-    - cron: '27-59/30 * * * *'
+    - cron: '0 0 * * *'
 
 jobs:
   refresh-caches:
