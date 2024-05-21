@@ -1,12 +1,13 @@
-name: Crawl
+name: refresh caches
 
 on:
   workflow_dispatch: # for debugging
-  # schedule:
-  #   - cron: '*/20 * * * *'
+  schedule:
+    # offsets the crawl to deal with the congestion before the start of the contest
+    - cron: '27-59/30 * * * *'
 
 jobs:
-  crawl:
+  refresh-caches:
     runs-on: ubuntu-latest
     env:
       REPOSITORY_PATH: ./ac-predictor-data # TODO: make absolute paths
@@ -41,4 +42,4 @@ jobs:
       - name: Run crawler
         env:
           HEALTHCHECK_UUID: ${{ secrets.HEALTHCHECK_UUID }}
-        run: ac-predictor/crawler/healthcheck.sh
+        run: ac-predictor/crawler/healthcheck.sh ac-predictor-crawler-refresh-caches
